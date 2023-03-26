@@ -17,7 +17,7 @@ generated randomly using the game: 'Le cadavre exquis boira le vin nouveau' (The
 will drink the new wine)."
 
 That is as good a definition as I could come up with. So now, why not play this game of collaboration 
-with ChatGPT?
+by writing some poetry with ChatGPT?
 
 1) First, the human writes some verse.  
 2) ChatGPT is prompted with only the last line of the human's contribution.  
