@@ -16,13 +16,14 @@ name given to the game by the Surrealists. It is said that the name was inspired
 generated randomly using the game: 'Le cadavre exquis boira le vin nouveau' (The exquisite corpse 
 will drink the new wine)."
 
-That is as good a definition as I could come up with. So now, why not make play game of collaborating 
-on poetry with ChatGPT?
+That is as good a definition as I could come up with. So now, why not play this game of collaboration 
+with ChatGPT?
 
 1) First, the human writes some verse.  
 2) ChatGPT is prompted with only the last line of the human's contribution.  
 3) The AI returns it's contribution, of which the human user is prompted with the last line
-4) Repeat, until the user chooses to reveal the poem's entirety
+4) Human continues the poem
+5) Repeat, until the human chooses to reveal the poem's entirety
 
 And one need not necessarily write in English. It should work in any of the languages ChatGPT
 speaks.
