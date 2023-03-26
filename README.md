@@ -19,7 +19,7 @@ will drink the new wine)."
 That is as good a definition as I could come up with. So now, why not play this game of collaboration 
 by writing some poetry with ChatGPT?
 
-1) First, the human writes some verse. Cliks the "Fold" button (essentially folding the page). 
+1) First, the human writes some verse. Clicks the "Fold" button (essentially folding the page). 
 2) ChatGPT is prompted with only the last line of the human's contribution.  
 3) The AI returns its contribution. The page is (virtually) folded, only the last line is visible.
 4) Human continues the poem from that line. And folds again.
