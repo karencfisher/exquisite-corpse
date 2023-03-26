@@ -21,8 +21,8 @@ by writing some poetry with ChatGPT?
 
 1) First, the human writes some verse. Cliks the "Fold" button (essentially folding the page). 
 2) ChatGPT is prompted with only the last line of the human's contribution.  
-3) The AI returns its contribution. Page is folded and the user is prompted with the last line.
-4) Human continues the poem from that line. And folds.
+3) The AI returns its contribution. The page is (virtually) folded, only the last line is visible.
+4) Human continues the poem from that line. And folds again.
 5) Repeat, until the human chooses to reveal the poem's entirety.
 
 And one need not necessarily write in English. It should work in any of the languages ChatGPT
