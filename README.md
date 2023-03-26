@@ -1,6 +1,6 @@
 # exquisite-corpse
 
-Exquisite corpse (according to ChatGPT): 
+Exquisite corpse, according to ChatGPT, 
 
 "is a collaborative drawing or writing game invented by Surrealist artists in the 
 early 20th century. The game involves a group of people creating a drawing or piece of writing 
