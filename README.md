@@ -89,7 +89,7 @@ Replacing <your secret key> with your key. BE CAREFUL TO **NOT** PUT THIS INFORM
 
 These are available to edit for your experimentation, if you like.
 
-**instructions.txt** - the prompting for ChatGPT to instruct it to play its role in the collaboration.
+**instructions.txt** - the prompt for ChatGPT to instruct it to play its role in the collaboration.
 
 **gpt_config.json** - Paramaters for the language model. Such as temperature or maximum expected output in tokens.
 
