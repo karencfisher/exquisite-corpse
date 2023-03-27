@@ -1,3 +1,7 @@
 /.vscode
 /exqc-env
 .env
+/build
+/dist
+/__pycache__
+exquisite.spec

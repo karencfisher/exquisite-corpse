@@ -1,6 +1,8 @@
 # exquisite-corpse
 
-Exquisite corpse, according to ChatGPT, 
+<h2>Introduction</h2>
+
+**Exquisite corpse**, according to ChatGPT, 
 
 "is a collaborative drawing or writing game invented by Surrealist artists in the 
 early 20th century. The game involves a group of people creating a drawing or piece of writing 
@@ -28,4 +30,74 @@ by writing some poetry with ChatGPT?
 And one need not necessarily write in English. It should work in any of the languages ChatGPT
 speaks.
 
+<h2>Installation</h2>
+
+There are two options. 
+
+<h3>To run the application</h3>
+
+If you only wish to play the exquisite-corpse game to collaborate with the AI on some poetry, simply download the exquieite-corpse.zip file. Unzip the directory containing the application and accesory files, and follow the instructions in the readme.txt.
+
+<h3>Clone this repository</h3>
+
+It is advisable to work in a virtual environment, as shown below.
+
+1) Clone this repository, and change to the new directory. (You will need to have git and LFS installed.)
+
+```
+https://github.com/karencfisher/exquisite-corpse.git
+cd exquisite-corpse
+```
+
+2) Create a Python virtual environment and activate it, e.g.,
+
+```
+python -m venv exq-env
+exq-env\scripts\activate
+```
+
+3) Install dependencies using the requirements.txt file, e.g.,
+
+```
+pip -r requirements.txt
+```
+
+
+<h2>Configuration</h2>
+
+If you do not already have an account to use the OpenAI API, you will need to do so. You will initially have $18 credit for usage, which is good for 3 months. If you have used the free credits or they have expired after 3 months (which ever happens first), you will need to set up a paid account.
+
+To do so,
+you can setup an account and obtain your key here:
+
+https://platform.openai.com/signup
+
+Once you have an OpenAI account, you can proceed to,
+
+https://platform.openai.com/account/api-keys
+
+You will then need to create a .env file containig your secret key.
+
+```
+SECRET_KEY = '<your secret key>'
+```
+
+Replacing <your secret key> with your key. BE CAREFUL TO **NOT** PUT THIS INFORMATION IN PUBLIC PLACES.
+(It's why its called "secret," after all.)
+
+<h3>Configuration Files</h3>
+
+These are available to edit for your experimentation, if you like.
+
+**instructions.txt** - the prompting for ChatGPT to instruct it to play its role in the collaboration.
+
+**gpt_config.json** - Paramaters for the language model. Such as temperature or maximum expected output in tokens.
+
+<h2>Running</h2>
+
+Run on the command line:
+
+```
+python exquisite.py
+```
 
