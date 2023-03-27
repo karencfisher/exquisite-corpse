@@ -27,7 +27,8 @@ by writing some poetry with ChatGPT?
 4) Human continues the poem from that line. And folds again.
 5) Repeat, until the human chooses to reveal the poem's entirety.
 
-Feeling uninspired? If you just click the "Fold" button, ChatGPT will begin. 
+Feeling uninspired? If you just click the "Fold" button, ChatGPT will begin. (if it returns nothing,
+try again). If you repeatedly click "Fold" ChatGPT will continue on from its last line.
 
 And one need not necessarily write in English. It should work in any of the languages ChatGPT
 speaks (this is not yet tested, however).
