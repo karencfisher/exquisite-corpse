@@ -92,16 +92,25 @@ class Application(tk.Frame):
         self.first = False
         prompt.append(self.poem.get_prompt())
 
-        response = openai.ChatCompletion.create(
-            model=self.config['model'],
-            messages=prompt,
-            max_tokens=self.config['max_tokens'],
-            temperature=self.config['temperature'],
-            top_p=self.config['top_p'],
-            n=self.config['n'],
-            presence_penalty=self.config['presence_penalty'],
-            frequency_penalty=self.config['frequency_penalty']
-        )
+        try:
+            response = openai.ChatCompletion.create(
+                model=self.config['model'],
+                messages=prompt,
+                max_tokens=self.config['max_tokens'],
+                temperature=self.config['temperature'],
+                top_p=self.config['top_p'],
+                n=self.config['n'],
+                presence_penalty=self.config['presence_penalty'],
+                frequency_penalty=self.config['frequency_penalty']
+            )
+        except openai.error.AuthenticationError:
+            messagebox.showerror('Exquisite-corpse',
+                                 'You have not setup your secret key!')
+            self.master.quit()
+        except:
+            messagebox.showerror('Exquisite-corpse',
+                                 'An error has occured!')
+            return
 
         text = response.choices[0].message.content.strip()
         self.poem.add_lines(text)
