@@ -33,7 +33,7 @@ And one need not necessarily write in English. It should work in any of the lang
 speaks (this is not yet tested, however).
 
 <br><hr>
-An example of a collaborative poem. ChatGPT's contributions are bold, human's italic.
+An example of a collaborative poem. ChatGPT's contributions are **bold**, human's *italic*.
 
 *****
 
