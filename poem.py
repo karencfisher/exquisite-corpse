@@ -1,8 +1,7 @@
 class Poem:
-    def __init__(self, lines_shown=1):
+    def __init__(self):
         self.dirty=False
         self.complete_text = []
-        self.lines_shown = lines_shown
 
     def get_last_line(self):
         return self.complete_text[-1]
@@ -23,7 +22,7 @@ class Poem:
     
     def add_lines(self, text, first=False):
         lines = text.strip().split('\n')
-        start = 0 if first else self.lines_shown
+        start = 0 if first else 1
         for line in lines[start:]:
             self.complete_text.append(line + '\n')
         self.dirty = True

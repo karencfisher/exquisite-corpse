@@ -76,6 +76,7 @@ class Application(tk.Frame):
                 self.save_file()
         self.poem.clear_poem()
         self.textbox.delete("1.0", tk.END)
+        self.ai_button['state'] = tk.NORMAL
 
     def exit_app(self):
         if self.poem.dirty:
@@ -121,6 +122,7 @@ class Application(tk.Frame):
         # Show the full current poem
         self.textbox.delete("1.0",tk.END)
         self.textbox.insert("1.0", self.poem.get_poem())
+        self.ai_button['state'] = tk.DISABLED
         
 
 def main():
