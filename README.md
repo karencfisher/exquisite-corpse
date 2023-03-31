@@ -80,7 +80,7 @@ There are two options.
 
 <h3>To run the application</h3>
 
-If you only wish to play the exquisite-corpse game to collaborate with the AI on some poetry, simply download the exquieite-corpse.zip file. Unzip the directory containing the application and accesory files, and follow the instructions in the readme.txt.
+If you only wish to play the exquisite-corpse game to collaborate with the AI on some poetry, simply download the exquisite-corpse.zip file. Unzip the directory containing the application and related files, and follow the instructions in the readme.txt.
 
 <h3>Clone this repository</h3>
 
