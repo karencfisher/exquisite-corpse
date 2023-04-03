@@ -77,6 +77,7 @@ class Application(tk.Frame):
         self.poem.clear_poem()
         self.textbox.delete("1.0", tk.END)
         self.ai_button['state'] = tk.NORMAL
+        self.first = True
 
     def exit_app(self):
         if self.poem.dirty:
