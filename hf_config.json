@@ -1,0 +1,4 @@
+{"model": "stabilityai/stablelm-tuned-alpha-7b",
+ "prompt_template": "<|SYSTEM|> %sys_prompt%<|USER|> %user_prompt% <|ASSISTANT|>",
+ "max_length": 256,
+ "temperature": 0.5}

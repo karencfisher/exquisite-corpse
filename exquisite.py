@@ -5,14 +5,17 @@ import tkinter as tk
 from tkinter import filedialog
 from tkinter import messagebox
 
-import openai
-from dotenv import load_dotenv
-
 from poem import Poem
+from OpenAI import OpenAI
+from HuggingFace import HuggingFace
+
+
+PROVIDERS = {'OpenAI': {'module': OpenAI, 'config_file': 'gpt_config.json'},
+             'HugginFace': {'module': HuggingFace, 'config_file': 'hf_config.json'}}
 
 
 class Application(tk.Frame):
-    def __init__(self, master=None):
+    def __init__(self, master=None, provider='OpenAI'):
         super().__init__(master)
         self.master = master
         self.master.title("Exquisite Corpse!")
@@ -20,18 +23,15 @@ class Application(tk.Frame):
         self.master.config(bg="#88769c")
         self.create_widgets()
 
-        # fetch API key from environment
-        load_dotenv()
-        openai.api_key = os.getenv('SECRET_KEY')
-
         # configuration
-        with open('gpt_config.json', 'r') as CONFIG:
+        with open(PROVIDERS[provider]['config_file'], 'r') as CONFIG:
             self.config = json.load(CONFIG)
 
         # system prompt
         with open('instructions.txt', 'r') as INSTRUCT:
             self.instructs = INSTRUCT.read()
-        
+
+        self.provider = PROVIDERS[provider]['module'](self.config)
         self.poem = Poem()
         self.first = True
 
@@ -90,31 +90,10 @@ class Application(tk.Frame):
         # Generate the next line of poetry using GPT-4
         user_text = self.textbox.get("1.0", "end-1c")
         self.poem.add_lines(user_text, first=self.first)
-        prompt = [{'role': 'system', 'content': self.instructs}]
         self.first = False
-        prompt.append(self.poem.get_prompt())
+        user_prompt = self.poem.get_prompt()
 
-        try:
-            response = openai.ChatCompletion.create(
-                model=self.config['model'],
-                messages=prompt,
-                max_tokens=self.config['max_tokens'],
-                temperature=self.config['temperature'],
-                top_p=self.config['top_p'],
-                n=self.config['n'],
-                presence_penalty=self.config['presence_penalty'],
-                frequency_penalty=self.config['frequency_penalty']
-            )
-        except openai.error.AuthenticationError:
-            messagebox.showerror('Exquisite-corpse',
-                                 'You have not setup your secret key!')
-            self.master.quit()
-        except:
-            messagebox.showerror('Exquisite-corpse',
-                                 'An error has occured!')
-            return
-
-        text = response.choices[0].message.content.strip()
+        text = self.provider.query(self.instructs, user_prompt)
         self.poem.add_lines(text)
         self.textbox.delete("1.0",tk.END)
         self.textbox.insert("1.0", self.poem.get_last_line())

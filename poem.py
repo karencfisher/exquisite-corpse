@@ -10,7 +10,7 @@ class Poem:
         if len(self.complete_text) == 0:
             self.complete_text.append('\n')
         last_line = self.complete_text[-1]
-        prompt = {'role': 'user', 'content': last_line}
+        prompt = last_line
         return prompt
     
     def get_poem(self):
