@@ -11,7 +11,7 @@ from HuggingFace import HuggingFace
 
 
 PROVIDERS = {'OpenAI': {'module': OpenAI, 'config_file': 'gpt_config.json'},
-             'HugginFace': {'module': HuggingFace, 'config_file': 'hf_config.json'}}
+             'HuggingFace': {'module': HuggingFace, 'config_file': 'hf_config.json'}}
 
 
 class Application(tk.Frame):
