@@ -17,23 +17,22 @@ class HuggingFace:
 
     def query(self, sys_prompt, user_prompt):
         prompt = self.config['prompt_template'].replace('%sys_prompt%', sys_prompt)
-        prompt = prompt.replace('%user_prompt%', user_prompt)
-        prompt = {'parameters': self.parameters, 'inputs': prompt}
-        inputs = json.dumps(prompt)
+        # prompt = prompt.replace('%user_prompt%', user_prompt)
+        # prompt = {'parameters': self.parameters, 'inputs': prompt}
+        # inputs = json.dumps(prompt)
 
         retry = True
         count = 0
         while retry:
             response = requests.post(self.api_url,
                                     headers=self.headers,
-                                    data=inputs)
+                                    json=prompt)
             response_json = response.json()
             if response.status_code == 503:
                 count += 1
-                timeout = response_json['estimated_time']
-                time.sleep(timeout)
-                if count == 3:
-                    print('Retried 3 times.')
+                time.sleep(1)
+                if count == 25:
+                    print(f'Retried {count} times.')
                     break
                 continue
             retry = False
