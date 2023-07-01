@@ -22,7 +22,8 @@ class Application(tk.Frame):
 
         # fetch API key from environment
         load_dotenv()
-        openai.api_key = os.getenv('SECRET_KEY')
+        openai.api_key = os.getenv('OPENAI_API_KEY')
+
 
         # configuration
         with open('gpt_config.json', 'r') as CONFIG:
