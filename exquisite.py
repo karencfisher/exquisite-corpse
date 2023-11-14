@@ -76,9 +76,9 @@ class Application(tk.Frame):
         menubar = tk.Menu(self.master)
         filemenu = tk.Menu(menubar, tearoff=0)
         if self.opt_unfold:
-            filemenu.add_command(label=("Un/Fold"), command=self.toggle_fold, accelerator=f"{modkey}-f")
+            filemenu.add_command(label="Un/Fold", command=self.toggle_fold, accelerator=f"{modkey}-f")
         else:
-            filemenu.add_command(label=("Fold"), command=self.fold_poem, accelerator=f"{modkey}-f")
+            filemenu.add_command(label="Fold", command=self.fold_poem, accelerator=f"{modkey}-f")
         filemenu.add_command(label="Reveal Poem", command=self.reveal_poem, accelerator=f"{modkey}-r")
         filemenu.add_separator()
         filemenu.add_command(label="Save...", command=self.save_poem, accelerator=f"{modkey}-S")
@@ -92,8 +92,9 @@ class Application(tk.Frame):
         viewmenu = tk.Menu(menubar, tearoff=0) # for fullscreen menu option
         menubar.add_cascade(label="View", menu=viewmenu)
         self.master.config(menu=menubar)
+        self.filemenu = filemenu
 
-        # key bindings
+        # key bindings, etc
         self.master.bind_all(f"<{modkey}-s>", self.save_poem)
         self.master.bind_all(f"<{modkey}-C>", self.clear_poem)
         self.bind_for_folding()
@@ -101,16 +102,25 @@ class Application(tk.Frame):
         self.textbox.focus_set()
 
     def bind_for_folding(self):
-        """ Update key bindings for folding, ie. input. """
+        """ Update key bindings, menu items, and buttons for folding, ie. input. """
         modkey = "Command" if sys.platform == "darwin" else "Control"
         self.master.bind_all(f"<{modkey}-f>", self.toggle_fold if self.opt_unfold else self.fold_poem)
         self.master.bind_all(f"<{modkey}-r>", self.reveal_poem)
+        self.filemenu.entryconfig("Un/Fold" if self.opt_unfold else "Fold", state=tk.NORMAL)
+        self.filemenu.entryconfig("Reveal Poem" if self.opt_unfold else "Fold", state=tk.NORMAL)
+        self.fold_button['state'] = tk.NORMAL
+        self.reveal_button.configure(text="Reveal Poem", command=self.reveal_poem)
+        if self.opt_unfold: self.fold_button.configure(text="Fold")
 
     def bind_for_reveal(self):
-        """ Update key bindings for the poem reveal, ie. display. """
+        """ Update key bindings, menu items, and buttons for the poem reveal, ie. display. """
         modkey = "Command" if sys.platform == "darwin" else "Control"
         self.master.unbind(f"<{modkey}-f>")
         self.master.unbind(f"<{modkey}-r>")
+        self.filemenu.entryconfig("Un/Fold" if self.opt_unfold else "Fold", state=tk.DISABLED)
+        self.filemenu.entryconfig("Reveal Poem" if self.opt_unfold else "Fold", state=tk.DISABLED)
+        self.fold_button['state'] = tk.DISABLED
+        self.reveal_button.configure(text="Clear Poem", command=self.clear_poem)
 
     def save_poem(self, event=None):
         """ Open save dialog and display selected file in textbox. """
@@ -126,8 +136,6 @@ class Application(tk.Frame):
             self.ask_to_save_poem()
         self.poem.clear_poem()
         self.clear_text()
-        self.fold_button['state'] = tk.NORMAL
-        self.reveal_button.configure(text="Reveal Poem", command=self.reveal_poem)
         self.ignore_first = False
         self.bind_for_folding()
         self.textbox.focus_set()
@@ -244,8 +252,6 @@ class Application(tk.Frame):
 
         # show the poem
         self.set_text(self.poem.get_poem())
-        self.fold_button['state'] = tk.DISABLED
-        self.reveal_button.configure(text="Clear Poem", command=self.clear_poem)
         self.bind_for_reveal()
 
     def get_text(self):
