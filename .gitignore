@@ -1,5 +1,6 @@
 /.vscode
 /exqc-env
+/venv
 .env
 /build
 /dist
