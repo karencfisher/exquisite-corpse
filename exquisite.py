@@ -129,6 +129,7 @@ class Application(tk.Frame):
         file_path = filedialog.asksaveasfilename(filetypes=files, defaultextension=files,
                                                  title="Save Poem", initialfile="poem.txt")
         self.poem.save_to(file_path)
+        self.master.focus_set()
 
     def clear_poem(self, event=None):
         """ Clear poem and reset for next input. """
@@ -272,6 +273,8 @@ class Application(tk.Frame):
         if messagebox.askyesno("Exquisite-corpse",
                                "Would you like to save your poem?"):
             self.save_poem()
+        else:
+            self.master.focus_set()
 
 def main():
     root = tk.Tk()
