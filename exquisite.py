@@ -31,7 +31,7 @@ class Application(tk.Frame):
         self.opt_random_ai = 50 # percent chance to get an ai response
         self.opt_dummy_ai = True # use dummy ai text instead of the OpenAI API?
         self.opt_breaks = True # force line break between folds
-        self.opt_tags = True # prepend writer tags per fold: <ai> or <human>
+        self.opt_tags = True # prepend writer tag lines per fold: <ai> or <human>? adds "Reveal Writers" menu option
 
         # configure window
         self.master = master
@@ -79,6 +79,8 @@ class Application(tk.Frame):
         else:
             filemenu.add_command(label="Fold", command=self.fold_poem, accelerator=f"{modkey}-f")
         filemenu.add_command(label="Reveal Poem", command=self.reveal_poem, accelerator=f"{modkey}-r")
+        if self.opt_tags:
+            filemenu.add_command(label="Reveal Writers", command=self.reveal_writers, accelerator=f"Shift-{modkey}-r")
         filemenu.add_separator()
         filemenu.add_command(label="Save...", command=self.save_poem, accelerator=f"{modkey}-S")
         filemenu.add_command(label="Clear...", command=self.clear_poem, accelerator=f"Shift-{modkey}-C")
@@ -109,7 +111,11 @@ class Application(tk.Frame):
         self.filemenu.entryconfig("Reveal Poem", state=tk.NORMAL)
         self.fold_button["state"] = tk.NORMAL
         self.reveal_button.configure(text="Reveal Poem", command=self.reveal_poem)
-        if self.opt_unfold: self.fold_button.configure(text="Fold")
+        if self.opt_unfold:
+            self.fold_button.configure(text="Fold")
+        if self.opt_tags:
+            self.master.unbind(f"<{modkey}-R>")
+            self.filemenu.entryconfig("Reveal Writers", state=tk.DISABLED)
 
     def bind_for_reveal(self):
         """ Update key bindings, menu items, and buttons for the poem reveal, ie. display. """
@@ -120,6 +126,9 @@ class Application(tk.Frame):
         self.filemenu.entryconfig("Reveal Poem", state=tk.DISABLED)
         self.fold_button["state"] = tk.DISABLED
         self.reveal_button.configure(text="Clear Poem", command=self.clear_poem)
+        if self.opt_tags:
+            self.master.bind_all(f"<{modkey}-R>", self.reveal_writers)
+            self.filemenu.entryconfig("Reveal Writers", state=tk.NORMAL)
 
     def save_poem(self, event=None):
         """ Open save dialog and display selected file in textbox. """
@@ -240,7 +249,7 @@ class Application(tk.Frame):
         self.ignore_first = True
 
     def reveal_poem(self, event=None):
-        """ Show the full poem. """
+        """ Show the full poem. Strips writer tags if self.opt_tags is True. """
 
         # add any prev text to the poem
         self.textbox["state"] = tk.NORMAL
@@ -251,6 +260,15 @@ class Application(tk.Frame):
            self.add_human_lines()
 
         # show the poem
+        text = self.poem.get_poem()
+        if self.opt_tags:
+            for t in ["<human>\n", "<ai>\n"]:
+                text = text.replace(t, "")
+        self.set_text(text)
+        self.bind_for_reveal()
+
+    def reveal_writers(self, event=None):
+        """ Show the full poem without stripping writer tags. """
         self.set_text(self.poem.get_poem())
         self.bind_for_reveal()
 
