@@ -42,14 +42,14 @@ class Application(tk.Frame):
 
         # fetch API key from environment
         load_dotenv()
-        openai.api_key = os.getenv('OPENAI_API_KEY')
+        openai.api_key = os.getenv("OPENAI_API_KEY")
 
         # cloaf onfiguration
-        with open('gpt_config.json', 'r') as CONFIG:
+        with open("gpt_config.json", "r") as CONFIG:
             self.config = json.load(CONFIG)
 
         # load system prompt
-        with open('instructions.txt', 'r') as INSTRUCT:
+        with open("instructions.txt", "r") as INSTRUCT:
             self.instructs = INSTRUCT.read()
 
     def create_widgets(self):
@@ -108,7 +108,7 @@ class Application(tk.Frame):
         self.master.bind_all(f"<{modkey}-r>", self.reveal_poem)
         self.filemenu.entryconfig("Un/Fold" if self.opt_unfold else "Fold", state=tk.NORMAL)
         self.filemenu.entryconfig("Reveal Poem" if self.opt_unfold else "Fold", state=tk.NORMAL)
-        self.fold_button['state'] = tk.NORMAL
+        self.fold_button["state"] = tk.NORMAL
         self.reveal_button.configure(text="Reveal Poem", command=self.reveal_poem)
         if self.opt_unfold: self.fold_button.configure(text="Fold")
 
@@ -119,13 +119,13 @@ class Application(tk.Frame):
         self.master.unbind(f"<{modkey}-r>")
         self.filemenu.entryconfig("Un/Fold" if self.opt_unfold else "Fold", state=tk.DISABLED)
         self.filemenu.entryconfig("Reveal Poem" if self.opt_unfold else "Fold", state=tk.DISABLED)
-        self.fold_button['state'] = tk.DISABLED
+        self.fold_button["state"] = tk.DISABLED
         self.reveal_button.configure(text="Clear Poem", command=self.clear_poem)
 
     def save_poem(self, event=None):
         """ Open save dialog and display selected file in textbox. """
         poem_text = self.poem.get_poem()
-        files = [('Text Document', '*.txt')]
+        files = [("Text Document", "*.txt")]
         file_path = filedialog.asksaveasfilename(filetypes=files, defaultextension=files,
                                                  title="Save Poem", initialfile="poem.txt")
         self.poem.save_to(file_path)
@@ -172,25 +172,25 @@ class Application(tk.Frame):
             return True
         
         # send prompt for ChatGPT repsonse
-        prompt = [{'role': 'system', 'content': self.instructs}]
+        prompt = [{"role": "system", "content": self.instructs}]
         prompt.append(self.poem.get_prompt())
         try:
             response = openai.ChatCompletion.create(
-                model=self.config['model'],
+                model=self.config["model"],
                 messages=prompt,
-                max_tokens=self.config['max_tokens'],
-                temperature=self.config['temperature'],
-                top_p=self.config['top_p'],
-                n=self.config['n'],
-                presence_penalty=self.config['presence_penalty'],
-                frequency_penalty=self.config['frequency_penalty']
+                max_tokens=self.config["max_tokens"],
+                temperature=self.config["temperature"],
+                top_p=self.config["top_p"],
+                n=self.config["n"],
+                presence_penalty=self.config["presence_penalty"],
+                frequency_penalty=self.config["frequency_penalty"]
             )
         except openai.error.AuthenticationError:
-            messagebox.showerror('Exquisite-corpse',
-                                 'You have not set up your OpenAI secret key!')
+            messagebox.showerror("Exquisite-corpse",
+                                 "You have not set up your OpenAI secret key!")
             self.master.quit()
         except Exception as exc:
-            messagebox.showerror('Exquisite-corpse',
+            messagebox.showerror("Exquisite-corpse",
                                  f"An error has occured!\n{exc}")
             return False
         text = response.choices[0].message.content.strip()
@@ -209,7 +209,7 @@ class Application(tk.Frame):
             self.clear_text() # hide last line
             self.ignore_first = False
             self.fold_button.configure(text="Unfold")
-            self.textbox['state'] = tk.DISABLED
+            self.textbox["state"] = tk.DISABLED
             self.textbox.config(bg=self.master.cget("bg"))#"#eee")
         else:
             self.unfold_poem()
@@ -236,7 +236,7 @@ class Application(tk.Frame):
 
     def unfold_poem(self, event=None):
         """ Unfold text to show last poem line. """
-        self.textbox['state'] = tk.NORMAL
+        self.textbox["state"] = tk.NORMAL
         self.set_text(self.poem.get_last_line())
         self.ignore_first = True
 
@@ -244,7 +244,7 @@ class Application(tk.Frame):
         """ Show the full poem. """
 
         # add any prev text to the poem
-        self.textbox['state'] = tk.NORMAL
+        self.textbox["state"] = tk.NORMAL
         self.textbox.config(bg="#fff")
         linecount = len(self.get_text().strip().split('\n'))
         if (self.ignore_first and linecount > 1) or \
@@ -281,5 +281,5 @@ def main():
     app = Application(master=root)
     app.mainloop()
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

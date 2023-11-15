@@ -14,16 +14,16 @@ class Poem:
         return self.complete_text[-1] if len(self.complete_text) > 0 else "" 
     
     def get_prompt(self):
-        """ Returns a prompt wit hthe last line of the poem for ChatGPT. """
+        """ Returns a prompt with the last line of the poem for ChatGPT. """
         if len(self.complete_text) == 0:
             self.complete_text.append('\n')
         last_line = self.complete_text[-1]
-        prompt = {'role': 'user', 'content': last_line}
+        prompt = {"role": "user", "content": last_line}
         return prompt
     
     def get_poem(self):
         """ Returns the complete poem as a string. """
-        return ''.join(self.complete_text).lstrip()
+        return "".join(self.complete_text).lstrip()
     
     def clear_poem(self):
         """ Clears the poem. """
@@ -46,7 +46,7 @@ class Poem:
         """ Add a line break to the poem text. """
         self.complete_text.append('\n')
 
-    def save_to(self, file_path, mode='w'):
+    def save_to(self, file_path, mode="w"):
         """
             Save the poem as a string to a text file at file_path.
             Returns True on success.
