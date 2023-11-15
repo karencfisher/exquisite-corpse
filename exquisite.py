@@ -106,7 +106,7 @@ class Application(tk.Frame):
         self.master.bind_all(f"<{modkey}-f>", self.toggle_fold if self.opt_unfold else self.fold_poem)
         self.master.bind_all(f"<{modkey}-r>", self.reveal_poem)
         self.filemenu.entryconfig("Un/Fold" if self.opt_unfold else "Fold", state=tk.NORMAL)
-        self.filemenu.entryconfig("Reveal Poem" if self.opt_unfold else "Fold", state=tk.NORMAL)
+        self.filemenu.entryconfig("Reveal Poem", state=tk.NORMAL)
         self.fold_button["state"] = tk.NORMAL
         self.reveal_button.configure(text="Reveal Poem", command=self.reveal_poem)
         if self.opt_unfold: self.fold_button.configure(text="Fold")
@@ -117,7 +117,7 @@ class Application(tk.Frame):
         self.master.unbind(f"<{modkey}-f>")
         self.master.unbind(f"<{modkey}-r>")
         self.filemenu.entryconfig("Un/Fold" if self.opt_unfold else "Fold", state=tk.DISABLED)
-        self.filemenu.entryconfig("Reveal Poem" if self.opt_unfold else "Fold", state=tk.DISABLED)
+        self.filemenu.entryconfig("Reveal Poem", state=tk.DISABLED)
         self.fold_button["state"] = tk.DISABLED
         self.reveal_button.configure(text="Clear Poem", command=self.clear_poem)
 
