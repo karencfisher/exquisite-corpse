@@ -5,6 +5,7 @@
 import json, random
 import os
 import sys
+import argparse
 
 import tkinter as tk
 from tkinter import filedialog
@@ -16,23 +17,44 @@ from dotenv import load_dotenv
 
 from poem import Poem
 
+##### parser
+
+def create_parser():
+    """ Create commandline argyment parser. """
+    parser = argparse.ArgumentParser(description="Exquisite Corpse, according to ChatGPT")
+    parser.add_argument(
+        "--fontsize", action="store", dest="fontsize",
+        default=12, type=int, help="textbox font size in points, default: 12")
+    parser.add_argument("-u", "--unfold", action="store_true", dest="unfold",
+        help="enable interim \"unfolded\" state to hide previous input, ie. when used within a group")
+    parser.add_argument("-r", "--random", action="store_true", dest="random",
+        help="randomly choose between ai and human when folding")
+    parser.add_argument(
+        "--randomai", action="store", dest="random_ai",
+        default=50, type=int, help="percent chance to get an ai response, default: 50")
+    parser.add_argument("-d", "--dummyai", action="store_true", dest="dummy_ai",
+        help="use dummy ai text instead of ChatGPT (saves money when testing)")
+    parser.add_argument("-b", "--breaks", action="store_true", dest="breaks",
+        help="force line breaks between folds")
+    parser.add_argument("-t", "--tags", action="store_true", dest="tags",
+        help="prepend writer tag lines per fold: <ai> or <human>, adds Reveal Writers menu item")
+    parser.add_argument("-v", "--verbose", action="store_true", dest="verbose",
+        help="enable verbose printing")
+    return parser
+
+##### Application
+
 class Application(tk.Frame):
-    def __init__(self, master=None):
-        super().__init__(master)
+    def __init__(self, master=None, args=None):
+        super().__init__(master)  
 
         # state
         self.poem = Poem()
         self.ignore_first = False # ignore the first line when folding?
         self.isfolded = False # is the poem folded? then text hidden
 
-        # options
-        self.opt_textsize = 24 # textbox font size
-        self.opt_unfold = True # add interim "unfolded" state to hide previous input, ie. when used within a group
-        self.opt_random = True # randomly choose between ai and human when folding?
-        self.opt_random_ai = 50 # percent chance to get an ai response
-        self.opt_dummy_ai = True # use dummy ai text instead of the OpenAI API?
-        self.opt_breaks = True # force line break between folds
-        self.opt_tags = True # prepend writer tag lines per fold: <ai> or <human>? adds "Reveal Writers" menu option
+        # runtime options
+        self.args = args
 
         # configure window
         self.master = master
@@ -56,7 +78,7 @@ class Application(tk.Frame):
         """ Create window widgets: textbox & buttons. """
 
         # text box
-        self.textbox = tk.Text(self.master, font=Font(family="TkDefaultFont", size=self.opt_textsize),
+        self.textbox = tk.Text(self.master, font=Font(family="TkDefaultFont", size=self.args.fontsize),
                                bg="white", highlightthickness=0)
         self.textbox.grid(row=0, column=0, columnspan=5, sticky="nsew", padx=10, pady=10)
         self.master.grid_columnconfigure(0, weight=1)
@@ -64,7 +86,7 @@ class Application(tk.Frame):
         
         # fold button
         self.fold_button = tk.Button(self.master, text="Fold",
-                                     command=(self.toggle_fold if self.opt_unfold else self.fold_poem))
+                                     command=(self.toggle_fold if self.args.unfold else self.fold_poem))
         self.fold_button.grid(row=1, column=1, sticky="se", padx=(4, 10), pady=10)
 
         # reveal poem button
@@ -75,12 +97,12 @@ class Application(tk.Frame):
         modkey = "Command" if sys.platform == "darwin" else "Control"
         menubar = tk.Menu(self.master)
         filemenu = tk.Menu(menubar, tearoff=0)
-        if self.opt_unfold:
+        if self.args.unfold:
             filemenu.add_command(label="Un/Fold", command=self.toggle_fold, accelerator=f"{modkey}-f")
         else:
             filemenu.add_command(label="Fold", command=self.fold_poem, accelerator=f"{modkey}-f")
         filemenu.add_command(label="Reveal Poem", command=self.reveal_poem, accelerator=f"{modkey}-r")
-        if self.opt_tags:
+        if self.args.tags:
             filemenu.add_command(label="Reveal Writers", command=self.reveal_writers, accelerator=f"Shift-{modkey}-r")
         filemenu.add_separator()
         filemenu.add_command(label="Save...", command=self.save_poem, accelerator=f"{modkey}-S")
@@ -106,15 +128,15 @@ class Application(tk.Frame):
     def bind_for_folding(self):
         """ Update key bindings, menu items, and buttons for folding, ie. input. """
         modkey = "Command" if sys.platform == "darwin" else "Control"
-        self.master.bind_all(f"<{modkey}-f>", self.toggle_fold if self.opt_unfold else self.fold_poem)
+        self.master.bind_all(f"<{modkey}-f>", self.toggle_fold if self.args.unfold else self.fold_poem)
         self.master.bind_all(f"<{modkey}-r>", self.reveal_poem)
-        self.filemenu.entryconfig("Un/Fold" if self.opt_unfold else "Fold", state=tk.NORMAL)
+        self.filemenu.entryconfig("Un/Fold" if self.args.unfold else "Fold", state=tk.NORMAL)
         self.filemenu.entryconfig("Reveal Poem", state=tk.NORMAL)
         self.fold_button["state"] = tk.NORMAL
         self.reveal_button.configure(text="Reveal Poem", command=self.reveal_poem)
-        if self.opt_unfold:
+        if self.args.unfold:
             self.fold_button.configure(text="Fold")
-        if self.opt_tags:
+        if self.args.tags:
             self.master.unbind(f"<{modkey}-R>")
             self.filemenu.entryconfig("Reveal Writers", state=tk.DISABLED)
 
@@ -123,11 +145,11 @@ class Application(tk.Frame):
         modkey = "Command" if sys.platform == "darwin" else "Control"
         self.master.unbind(f"<{modkey}-f>")
         self.master.unbind(f"<{modkey}-r>")
-        self.filemenu.entryconfig("Un/Fold" if self.opt_unfold else "Fold", state=tk.DISABLED)
+        self.filemenu.entryconfig("Un/Fold" if self.args.unfold else "Fold", state=tk.DISABLED)
         self.filemenu.entryconfig("Reveal Poem", state=tk.DISABLED)
         self.fold_button["state"] = tk.DISABLED
         self.reveal_button.configure(text="Clear Poem", command=self.clear_poem)
-        if self.opt_tags:
+        if self.args.tags:
             self.master.bind_all(f"<{modkey}-R>", self.reveal_writers)
             self.filemenu.entryconfig("Reveal Writers", state=tk.NORMAL)
 
@@ -161,8 +183,8 @@ class Application(tk.Frame):
         user_text = self.get_text()
         if user_text == "":
             return False
-        if self.opt_breaks: self.poem.add_break()
-        if self.opt_tags: self.poem.add_lines("<human>")
+        if self.args.breaks: self.poem.add_break()
+        if self.args.tags: self.poem.add_lines("<human>")
         self.poem.add_lines(user_text, ignore_first=self.ignore_first)
         return True
 
@@ -173,9 +195,9 @@ class Application(tk.Frame):
         if not self.add_human_lines(): return
 
         # add dummy ai poem text
-        if self.opt_dummy_ai:
-            if self.opt_breaks: self.poem.add_break()
-            if self.opt_tags: self.poem.add_lines("<ai>")
+        if self.args.dummy_ai:
+            if self.args.breaks: self.poem.add_break()
+            if self.args.tags: self.poem.add_lines("<ai>")
             dummy = "Roses are red\n Violets blue,\nSugar is sweet\n And so are you."
             self.poem.add_lines(dummy)
             return True
@@ -196,7 +218,7 @@ class Application(tk.Frame):
             )
         except openai.error.AuthenticationError:
             messagebox.showerror("Exquisite-corpse",
-                                 "You have not set up your OpenAI secret key!")
+                                 "OpenAI authentication failed!\nIs the secret key set and valid?")
             self.master.quit()
         except Exception as exc:
             messagebox.showerror("Exquisite-corpse",
@@ -232,14 +254,14 @@ class Application(tk.Frame):
         If opt_random = True, randomly chooses between human or ChatGPT for the
         next lines, otherwise always generate a ChatGPT response.
         """
-        if self.opt_random:
-            if(random.randint(0, 100) < self.opt_random_ai):
+        if self.args.random:
+            if(random.randint(0, 100) < self.args.random_ai):
                 if not self.add_ai_lines(): return
             else:
                 if not self.add_human_lines(): return
         else:
             # ChatGPT
-            if not self.add_ai_line(): return
+            if not self.add_ai_lines(): return
         self.set_text(self.poem.get_last_line())
         self.ignore_first = True
 
@@ -250,7 +272,7 @@ class Application(tk.Frame):
         self.ignore_first = True
 
     def reveal_poem(self, event=None):
-        """ Show the full poem. Strips writer tags if self.opt_tags is True. """
+        """ Show the full poem. Strips writer tags if self.args.tags is True. """
 
         # add any prev text to the poem
         self.textbox["state"] = tk.NORMAL
@@ -262,7 +284,7 @@ class Application(tk.Frame):
 
         # show the poem
         text = self.poem.get_poem()
-        if self.opt_tags:
+        if self.args.tags:
             for t in ["<human>\n", "<ai>\n"]:
                 text = text.replace(t, "")
         self.set_text(text)
@@ -295,8 +317,14 @@ class Application(tk.Frame):
             self.master.focus_set()
 
 def main():
+
+    # parse commandline
+    parser = create_parser()
+    args = parser.parse_args()
+
+    # run application
     root = tk.Tk()
-    app = Application(master=root)
+    app = Application(master=root, args=args)
     app.mainloop()
 
 if __name__ == "__main__":
