@@ -44,12 +44,11 @@ class Application(tk.Frame):
         load_dotenv()
         openai.api_key = os.getenv("OPENAI_API_KEY")
 
-        # cloaf onfiguration
-        with open("gpt_config.json", "r") as CONFIG:
+        # load configuration and system prompt
+        scriptdir = os.path.dirname(os.path.realpath(sys.argv[0]))
+        with open(f"{scriptdir}/gpt_config.json", "r") as CONFIG:
             self.config = json.load(CONFIG)
-
-        # load system prompt
-        with open("instructions.txt", "r") as INSTRUCT:
+        with open(f"{scriptdir}/instructions.txt", "r") as INSTRUCT:
             self.instructs = INSTRUCT.read()
 
     def create_widgets(self):
@@ -245,7 +244,7 @@ class Application(tk.Frame):
 
         # add any prev text to the poem
         self.textbox["state"] = tk.NORMAL
-        self.textbox.config(bg="#fff")
+        self.textbox.config(bg="white")
         linecount = len(self.get_text().strip().split('\n'))
         if (self.ignore_first and linecount > 1) or \
            (not self.ignore_first and linecount > 0):
