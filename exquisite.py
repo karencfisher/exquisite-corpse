@@ -23,6 +23,12 @@ def create_parser():
     """ Create commandline argyment parser. """
     parser = argparse.ArgumentParser(description="Exquisite Corpse, according to ChatGPT")
     parser.add_argument(
+        "instructfile", type=str, nargs="?", metavar="INSTRUCT",
+        default=None, help="custom ChatGPT instructions txt file")
+    parser.add_argument(
+        "--config", action="store", dest="configfile",
+        default=None, help="custom ChatGPT configuration json file")
+    parser.add_argument(
         "--fontsize", action="store", dest="fontsize",
         default=12, type=int, help="textbox font size in points, default: 12")
     parser.add_argument("-u", "--unfold", action="store_true", dest="unfold",
@@ -67,11 +73,17 @@ class Application(tk.Frame):
         load_dotenv()
         openai.api_key = os.getenv("OPENAI_API_KEY")
 
-        # load configuration and system prompt
+        # load configuration
         scriptdir = os.path.dirname(os.path.realpath(sys.argv[0]))
-        with open(f"{scriptdir}/gpt_config.json", "r") as CONFIG:
+        configfile = f"{scriptdir}/gpt_config.json" # default
+        if args.configfile: configfile = args.configfile
+        with open(configfile, "r") as CONFIG:
             self.config = json.load(CONFIG)
-        with open(f"{scriptdir}/instructions.txt", "r") as INSTRUCT:
+
+        # load system prompt
+        instructfile = f"{scriptdir}/instructions.txt" # default
+        if args.instructfile != "": instructfile = args.instructfile
+        with open(instructfile, "r") as INSTRUCT:
             self.instructs = INSTRUCT.read()
 
     def create_widgets(self):
