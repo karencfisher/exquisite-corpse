@@ -1,4 +1,5 @@
-# Copyright (c) 2023 karencfisher, et al.
+# copyright (c) 2023 karencfisher, et al.
+# updated by Dan Wilcox <dan.wilcox@zkm.de> ZKM | Hertz-Lab 2023
 
 import sys
 
