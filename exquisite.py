@@ -37,7 +37,7 @@ def create_parser():
         help="randomly choose between ai and human when folding")
     parser.add_argument(
         "--randomai", action="store", dest="random_ai",
-        default=50, type=int, help="percent chance to get an ai response, default: 50")
+        default=50, type=int, help="percent chance to get an ai response 0-100, default: 50")
     parser.add_argument("-d", "--dummyai", action="store_true", dest="dummy_ai",
         help="use dummy ai text instead of ChatGPT (saves money when testing)")
     parser.add_argument("-b", "--breaks", action="store_true", dest="breaks",
@@ -77,14 +77,25 @@ class Application(tk.Frame):
         scriptdir = os.path.dirname(os.path.realpath(sys.argv[0]))
         configfile = f"{scriptdir}/gpt_config.json" # default
         if args.configfile: configfile = args.configfile
+        if self.args.verbose: print(f"config: {configfile}")
         with open(configfile, "r") as CONFIG:
             self.config = json.load(CONFIG)
 
         # load system prompt
         instructfile = f"{scriptdir}/instructions.txt" # default
-        if args.instructfile != "": instructfile = args.instructfile
+        if args.instructfile: instructfile = args.instructfile
+        if self.args.verbose: print(f"instructions: {instructfile}")
         with open(instructfile, "r") as INSTRUCT:
             self.instructs = INSTRUCT.read()
+
+        # options summary
+        if self.args.verbose:
+            print(f"unfold: {args.unfold}")
+            print(f"random: {args.random}")
+            print(f"random ai %: {args.random_ai}")
+            print(f"dummy ai: {args.dummy_ai}")
+            print(f"line breaks: {args.breaks}")
+            print(f"writer tags: {args.tags}")
 
     def create_widgets(self):
         """ Create window widgets: textbox & buttons. """
@@ -171,6 +182,7 @@ class Application(tk.Frame):
         files = [("Text Document", "*.txt")]
         file_path = filedialog.asksaveasfilename(filetypes=files, defaultextension=files,
                                                  title="Save Poem", initialfile="poem.txt")
+        if self.args.verbose: print(f"saving to {file_path}")
         self.poem.save_to(file_path)
         self.master.focus_set()
 
@@ -183,6 +195,7 @@ class Application(tk.Frame):
         self.ignore_first = False
         self.bind_for_folding()
         self.textbox.focus_set()
+        if self.args.verbose: print("cleared")
 
     def exit_app(self, event=None):
         """ Ask to save before quitting. """
@@ -198,6 +211,7 @@ class Application(tk.Frame):
         if self.args.breaks: self.poem.add_break()
         if self.args.tags: self.poem.add_lines("<human>")
         self.poem.add_lines(user_text, ignore_first=self.ignore_first)
+        if self.args.verbose: print(f"\nadd human:\n{user_text}")
         return True
 
     def add_ai_lines(self):
@@ -212,6 +226,7 @@ class Application(tk.Frame):
             if self.args.tags: self.poem.add_lines("<ai>")
             dummy = "Roses are red\n Violets blue,\nSugar is sweet\n And so are you."
             self.poem.add_lines(dummy)
+            if self.args.verbose: print(f"\nadd dummy ai:\n{dummy}")
             return True
         
         # send prompt for ChatGPT repsonse
@@ -228,16 +243,20 @@ class Application(tk.Frame):
                 presence_penalty=self.config["presence_penalty"],
                 frequency_penalty=self.config["frequency_penalty"]
             )
-        except openai.error.AuthenticationError:
+        except openai.error.AuthenticationError as exc:
+            print(f"open ai authentication failed: {exc}", file=sys.stderr)
             messagebox.showerror("Exquisite-corpse",
                                  "OpenAI authentication failed!\nIs the secret key set and valid?")
             self.master.quit()
+            return False
         except Exception as exc:
+            print(f"open ai error: {exc}", file=sys.stderr)
             messagebox.showerror("Exquisite-corpse",
                                  f"An error has occured!\n{exc}")
             return False
         text = response.choices[0].message.content.strip()
         self.poem.add_lines(text)
+        if self.args.verbose: print(f"\nadd ai: {text}")
         return True
 
     def toggle_fold(self, event=None):
