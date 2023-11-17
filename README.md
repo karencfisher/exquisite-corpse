@@ -96,8 +96,10 @@ If you only wish to play the exquisite-corpse game to collaborate with the AI on
 
 1) Clone this repository and change to the new directory. (You will need to have Git and [Git LFS](https://git-lfs.com) installed.)
 
-    git clone https://github.com/karencfisher/exquisite-corpse.git
-    cd exquisite-corpse
+```
+git clone https://github.com/karencfisher/exquisite-corpse.git
+cd exquisite-corpse
+```
 
 2) Install system dependencies
 
