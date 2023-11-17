@@ -141,13 +141,19 @@ Once you have an OpenAI account, you can proceed to,
 
 https://platform.openai.com/account/api-keys
 
-You will then need to create a .env file containing your secret key.
+You will then need to create an `.env` file containing your secret key.
 
 ```
 SECRET_KEY = '<your secret key>'
 ```
 
 Replacing `<your secret key>` with your key. BE CAREFUL TO **NOT** PUT THIS INFORMATION IN PUBLIC PLACES. (It's why its called "secret," after all.)
+
+On a macOS or Linux console, to create the file and set the key in one line:
+
+    echo "SECRET_KEY = ABC123..." > .env
+
+_Note: As this file starts with a period `.`, it will be hidden by default on Linux and macOS. Don't forget it's there as it won't appear in Finder, etc!_
 
 ### Configuration Files
 
