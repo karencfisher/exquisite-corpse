@@ -1,6 +1,13 @@
-# exquisite-corpse
+exquisite-corpse
+================
 
-<h2>Introduction</h2>
+karencfisher 2023  
+with contributions by Dan Wilcox, ZKM | Hertz-Lab 2023
+
+MIT License.
+
+Introduction
+------------
 
 **Exquisite corpse**, according to ChatGPT, 
 
@@ -33,10 +40,11 @@ try again). If you repeatedly click "Fold" ChatGPT will continue on from its las
 And one need not necessarily write in English. It should work in any of the languages ChatGPT
 speaks (this is not yet tested, however).
 
-<br><hr>
+---
+
 An example of a collaborative poem. ChatGPT's contributions are **bold**, human's *italic*.
 
-*****
+---
 
 <b>
 Stirring the oceans into a frothy swoon.  
@@ -72,47 +80,58 @@ In concupiscence of a days denouement</i>
 The night is young, our hearts are aflame,  
 With the promise of adventure and no shame.  
 We'll run wild, through the woods and the streams.</b>
-<hr><br>
 
-<h2>Installation</h2>
+---
+
+Installation
+------------
 
 There are two options. 
 
-<h3>To run the application</h3>
+### To run the application (Windows)
 
 If you only wish to play the exquisite-corpse game to collaborate with the AI on some poetry, simply download the exquisite-corpse.zip file. Unzip the directory containing the application and related files, and follow the instructions in the readme.txt.
 
-<h3>Clone this repository</h3>
+### Clone this repository
 
-It is advisable to work in a virtual environment, as shown below.
+1) Clone this repository and change to the new directory. (You will need to have Git and [Git LFS](https://git-lfs.com) installed.)
 
-1) Clone this repository, and change to the new directory. (You will need to have git and LFS installed.)
+    git clone https://github.com/karencfisher/exquisite-corpse.git
+    cd exquisite-corpse
 
-```
-https://github.com/karencfisher/exquisite-corpse.git
-cd exquisite-corpse
-```
+2) Install system dependencies
 
-2) Create a Python virtual environment and activate it, e.g.,
+* Python3
+* Tkinter
 
-```
-python -m venv exq-env
-exq-env\scripts\activate
-```
+**Windows**: download Python and install from [python.org](https://www.python.org/downloads/windows/), Tkinter is included
 
-3) Install dependencies using the requirements.txt file, e.g.,
+**macOS**: it is recommended to install Python and Tkinter using [homebrew](https://brew.sh)
 
-```
-pip -r requirements.txt
-```
+    brew install python3 tkinter python-tk
 
+**Linux**: a version of Python3 should already be installed, install Tkinter using your package manager, for Debian it woudl be something like:
 
-<h2>Configuration</h2>
+    sudo apt-get install python-tk
 
-If you do not already have an account to use the OpenAI API, you will need to do so. You will initially have $18 credit for usage, which is good for 3 months. If you have used the free credits or they have expired after 3 months (which ever happens first), you will need to set up a paid account.
+3) Create a Python virtual environment and install dependencies in requirements.txt, e.g.
 
-To do so,
-you can setup an account and obtain your key here:
+With the Makefile:
+
+    make
+
+or manually:
+
+    python -m venv venv
+    ./venv/bin/activate
+    pip -r requirements.txt
+
+Configuration
+-------------
+
+If you do not already have an account to use the OpenAI API, you will need to do so. As of 2023, you will initially have $18 credit for usage, which is good for 3 months. If you have used the free credits or they have expired after 3 months (which ever happens first), you will need to set up a paid account.
+
+To do so, you can setup an account and obtain your key here:
 
 https://platform.openai.com/signup
 
@@ -120,28 +139,82 @@ Once you have an OpenAI account, you can proceed to,
 
 https://platform.openai.com/account/api-keys
 
-You will then need to create a .env file containig your secret key.
+You will then need to create a .env file containing your secret key.
 
 ```
 SECRET_KEY = '<your secret key>'
 ```
 
-Replacing <your secret key> with your key. BE CAREFUL TO **NOT** PUT THIS INFORMATION IN PUBLIC PLACES.
-(It's why its called "secret," after all.)
+Replacing `<your secret key>` with your key. BE CAREFUL TO **NOT** PUT THIS INFORMATION IN PUBLIC PLACES. (It's why its called "secret," after all.)
 
-<h3>Configuration Files</h3>
+### Configuration Files
 
 These are available to edit for your experimentation, if you like.
 
 **instructions.txt** - the prompt for ChatGPT to instruct it to play its role in the collaboration.
 
-**gpt_config.json** - Paramaters for the language model. Such as temperature or maximum expected output in tokens.
+**gpt_config.json** - Parameters for the language model. Such as temperature or maximum expected output in tokens.
 
-<h2>Running</h2>
+Additionally, you can provide paths to separate copies of each file via command line args.
 
-Run on the command line:
+Running
+-------
 
-```
-python exquisite.py
-```
+Run on the command line via the `exquisite` wrapper script:
 
+	./exquisite
+
+or manually by first activating the virtual environment:
+
+	./venv/bin/activate
+
+then running the main script:
+
+	python exquisite.py
+
+### Commandline Arguments
+
+Additional options and behavior can be set via the commandline arguments.
+
+Script `exquisite -h` help output:
+~~~
+usage: exquisite.py [-h] [--config CONFIGFILE] [--fontsize FONTSIZE] [-u] [-r] [--randomai RANDOM_AI] [-d] [-b] [-t] [-v] [INSTRUCT]
+
+Exquisite Corpse, according to ChatGPT
+
+positional arguments:
+  INSTRUCT              custom ChatGPT instructions txt file
+
+options:
+  -h, --help            show this help message and exit
+  --config CONFIGFILE   custom ChatGPT configuration json file
+  --fontsize FONTSIZE   textbox font size in points, default: 12
+  -u, --unfold          enable interim "unfolded" state to hide previous input, ie. when used within a group
+  -r, --random          randomly choose between ai and human when folding
+  --randomai RANDOM_AI  percent chance to get an ai response 0-100, default: 50
+  -d, --dummyai         use dummy ai text instead of ChatGPT (saves money when testing)
+  -b, --breaks          force line breaks between folds
+  -t, --tags            prepend writer tag lines per fold: <ai> or <human>, adds Reveal Writers menu item
+  -v, --verbose         enable verbose printing
+~~~
+
+For example, to enable unfold blanking, random ai responses, line breaks + writer tags, larger font, and a dummy ai response for testing (save $):
+
+	./exquisite -urbt --fontsize 24 --dummyai $@
+
+For custom instructions and ChatGPT configurations, either file can be given on the command line to be used in place of the default files:
+
+    ./exquisite --config my_gpt_config.json my_instructions.txt
+
+### Default Behavior
+
+The writer takes turns with ChatGPT on each fold. The text is kept plain without line breaks or writer tag annotation.
+
+### Additional Behavior
+
+Additional behavior has been added to allow for flexibility when used with multiple people ala round robin:
+
+* unfold: The textbox is hidden ("blanked") after folding so the writer will not know if ChatGPT has responded. The next writer then unfolds to unhide the textbox. The fold button and menu item act as a toggle between "Fold" and "Unfold".
+* random: Randomly choose to have ChatGPT respond to the last line, as opposed to *always* responding. The default is a 50% chance which can also be changed to allow for more or less ai responses.
+* breaks: Prepend an empty line between folds.
+* tags: Prepend writer tags `<human>` or `<ai>` to eahc fold to denote the original writer. When set, Reveal Poem will show the poem text without tags. The show the tags use the additional Reveal Writers option afterwards. Writer tags are always saved with the text file, whether or not they are revealed in the textbox,
