@@ -254,6 +254,8 @@ class Application(tk.Frame):
             messagebox.showerror("Exquisite-corpse",
                                  f"An error has occured!\n{exc}")
             return False
+        if self.args.breaks: self.poem.add_break()
+        if self.args.tags: self.poem.add_lines("<ai>")
         text = response.choices[0].message.content.strip()
         self.poem.add_lines(text)
         if self.args.verbose: print(f"\nadd ai: {text}")
