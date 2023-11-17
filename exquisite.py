@@ -71,7 +71,7 @@ class Application(tk.Frame):
 
         # fetch API key from environment
         load_dotenv()
-        openai.api_key = os.getenv("OPENAI_API_KEY")
+        openai.api_key = os.getenv("SECRET_KEY")
 
         # load configuration
         scriptdir = os.path.dirname(os.path.realpath(sys.argv[0]))
