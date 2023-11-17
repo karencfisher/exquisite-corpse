@@ -1,8 +1,8 @@
 exquisite-corpse
 ================
 
-karencfisher 2023  
-with contributions by Dan Wilcox, ZKM | Hertz-Lab 2023
+Karen C Fisher 2023  
+Contributions by Dan Wilcox, ZKM | Hertz-Lab 2023
 
 MIT License.
 
@@ -198,7 +198,7 @@ options:
   -v, --verbose         enable verbose printing
 ~~~
 
-For example, to enable unfold blanking, random ai responses, line breaks + writer tags, larger font, and a dummy ai response for testing (save $):
+For example, to enable unfold blanking, random AI responses, line breaks + writer tags, larger font, and a dummy AI response for testing (save $):
 
 	./exquisite -urbt --fontsize 24 --dummyai $@
 
@@ -214,7 +214,18 @@ The writer takes turns with ChatGPT on each fold. The text is kept plain without
 
 Additional behavior has been added to allow for flexibility when used with multiple people ala round robin:
 
-* unfold: The textbox is hidden ("blanked") after folding so the writer will not know if ChatGPT has responded. The next writer then unfolds to unhide the textbox. The fold button and menu item act as a toggle between "Fold" and "Unfold".
-* random: Randomly choose to have ChatGPT respond to the last line, as opposed to *always* responding. The default is a 50% chance which can also be changed to allow for more or less ai responses.
-* breaks: Prepend an empty line between folds.
-* tags: Prepend writer tags `<human>` or `<ai>` to eahc fold to denote the original writer. When set, Reveal Poem will show the poem text without tags. The show the tags use the additional Reveal Writers option afterwards. Writer tags are always saved with the text file, whether or not they are revealed in the textbox,
+#### Unfold
+
+The textbox is hidden ("blanked") after folding so the writer will not know if ChatGPT has responded. The next writer then unfolds to unhide the textbox. The fold button and menu item act as a toggle between "Fold" and "Unfold".
+
+#### Random
+
+Randomly choose to have ChatGPT respond to the last line, as opposed to *always* responding. The default is a 50% chance which can also be changed to allow for more or less AI responses.
+
+#### Breaks
+
+Prepend an empty line between folds. This should make it easier to delineate between responses, assuming there are no additional line breaks in the responses.
+
+#### Tags
+
+Prepend writer tags `<human>` or `<ai>` to each fold to denote the original writer. When set, Reveal Poem will show the poem text without tags. The show the tags use the additional Reveal Writers option afterwards. Writer tags are always saved with the text file, whether or not they are revealed in the textbox.
