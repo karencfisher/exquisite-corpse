@@ -1,11 +1,11 @@
 # Makefile to handle setting up Python virtual environment
 #
-# Copyright (c) 2021 ZKM | Hertz-Lab
+# Copyright (c) 2023 ZKM | Hertz-Lab
 # Dan Wilcox <dan.wilcox@zkm.de>
 #
-# BSD Simplified License.
+# MIT License.
 # For information on usage and redistribution, and for a DISCLAIMER OF ALL
-# WARRANTIES, see the file, "LICENSE.txt," in this distribution.
+# WARRANTIES, see the file, "LICENSE," in this distribution.
 #
 # This code has been developed at ZKM | Hertz-Lab as part of „The Intelligent
 # Museum“ generously funded by the German Federal Cultural Foundation.
