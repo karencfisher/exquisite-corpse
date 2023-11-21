@@ -15,6 +15,15 @@ from tkinter.font import Font
 import openai
 from dotenv import load_dotenv
 
+# load optional translations in locale dir
+try:
+    import gettext
+    gettext.bindtextdomain("base", "locale")
+    gettext.textdomain("base")
+    _ = gettext.gettext
+except:
+    _ = lambda s: s
+
 from poem import Poem
 
 ##### parser
@@ -64,7 +73,7 @@ class Application(tk.Frame):
 
         # configure window
         self.master = master
-        self.master.title("Exquisite Corpse!")
+        self.master.title(_("Exquisite Corpse!"))
         self.master.geometry("600x600")
         self.master.config(bg="#88769c")
         self.create_widgets()
@@ -108,12 +117,12 @@ class Application(tk.Frame):
         self.master.grid_rowconfigure(0, weight=1)
         
         # fold button
-        self.fold_button = tk.Button(self.master, text="Fold",
+        self.fold_button = tk.Button(self.master, text=_("Fold"),
                                      command=(self.toggle_fold if self.args.unfold else self.fold_poem))
         self.fold_button.grid(row=1, column=1, sticky="se", padx=(4, 10), pady=10)
 
         # reveal poem button
-        self.reveal_button = tk.Button(self.master, text="Reveal Poem", command=self.reveal_poem)
+        self.reveal_button = tk.Button(self.master, text=_("Reveal Poem"), command=self.reveal_poem)
         self.reveal_button.grid(row=1, column=0, sticky="sw", padx=(10, 4), pady=10)
 
         # menu
@@ -121,20 +130,20 @@ class Application(tk.Frame):
         menubar = tk.Menu(self.master)
         filemenu = tk.Menu(menubar, tearoff=0)
         if self.args.unfold:
-            filemenu.add_command(label="Un/Fold", command=self.toggle_fold, accelerator=f"{modkey}-f")
+            filemenu.add_command(label=_("Un/Fold"), command=self.toggle_fold, accelerator=f"{modkey}-f")
         else:
-            filemenu.add_command(label="Fold", command=self.fold_poem, accelerator=f"{modkey}-f")
-        filemenu.add_command(label="Reveal Poem", command=self.reveal_poem, accelerator=f"{modkey}-r")
+            filemenu.add_command(label=_("Fold"), command=self.fold_poem, accelerator=f"{modkey}-f")
+        filemenu.add_command(label=_("Reveal Poem"), command=self.reveal_poem, accelerator=f"{modkey}-r")
         if self.args.tags:
-            filemenu.add_command(label="Reveal Writers", command=self.reveal_writers, accelerator=f"Shift-{modkey}-r")
+            filemenu.add_command(label=_("Reveal Writers"), command=self.reveal_writers, accelerator=f"Shift-{modkey}-r")
         filemenu.add_separator()
-        filemenu.add_command(label="Save...", command=self.save_poem, accelerator=f"{modkey}-S")
-        filemenu.add_command(label="Clear...", command=self.clear_poem, accelerator=f"Shift-{modkey}-C")
+        filemenu.add_command(label=_("Save..."), command=self.save_poem, accelerator=f"{modkey}-S")
+        filemenu.add_command(label=_("Clear..."), command=self.clear_poem, accelerator=f"Shift-{modkey}-C")
         if sys.platform == "darwin": # override default quit on macOS
             self.master.createcommand("::tk::mac::Quit", self.exit_app)
         else: # add menu item
             filemenu.add_separator()
-            filemenu.add_command(label="Exit", command=self.exit_app)
+            filemenu.add_command(label=_("Exit"), command=self.exit_app)
         menubar.add_cascade(label="File", menu=filemenu)
         viewmenu = tk.Menu(menubar, tearoff=0) # for fullscreen menu option
         menubar.add_cascade(label="View", menu=viewmenu)
@@ -153,35 +162,35 @@ class Application(tk.Frame):
         modkey = "Command" if sys.platform == "darwin" else "Control"
         self.master.bind_all(f"<{modkey}-f>", self.toggle_fold if self.args.unfold else self.fold_poem)
         self.master.bind_all(f"<{modkey}-r>", self.reveal_poem)
-        self.filemenu.entryconfig("Un/Fold" if self.args.unfold else "Fold", state=tk.NORMAL)
-        self.filemenu.entryconfig("Reveal Poem", state=tk.NORMAL)
+        self.filemenu.entryconfig(_("Un/Fold") if self.args.unfold else _("Fold"), state=tk.NORMAL)
+        self.filemenu.entryconfig(_("Reveal Poem"), state=tk.NORMAL)
         self.fold_button["state"] = tk.NORMAL
-        self.reveal_button.configure(text="Reveal Poem", command=self.reveal_poem)
+        self.reveal_button.configure(text=_("Reveal Poem"), command=self.reveal_poem)
         if self.args.unfold:
-            self.fold_button.configure(text="Fold")
+            self.fold_button.configure(text=_("Fold"))
         if self.args.tags:
             self.master.unbind(f"<{modkey}-R>")
-            self.filemenu.entryconfig("Reveal Writers", state=tk.DISABLED)
+            self.filemenu.entryconfig(_("Reveal Writers"), state=tk.DISABLED)
 
     def bind_for_reveal(self):
         """ Update key bindings, menu items, and buttons for the poem reveal, ie. display. """
         modkey = "Command" if sys.platform == "darwin" else "Control"
         self.master.unbind(f"<{modkey}-f>")
         self.master.unbind(f"<{modkey}-r>")
-        self.filemenu.entryconfig("Un/Fold" if self.args.unfold else "Fold", state=tk.DISABLED)
-        self.filemenu.entryconfig("Reveal Poem", state=tk.DISABLED)
+        self.filemenu.entryconfig(_("Un/Fold") if self.args.unfold else _("Fold"), state=tk.DISABLED)
+        self.filemenu.entryconfig(_("Reveal Poem"), state=tk.DISABLED)
         self.fold_button["state"] = tk.DISABLED
-        self.reveal_button.configure(text="Clear Poem", command=self.clear_poem)
+        self.reveal_button.configure(text=_("Clear Poem"), command=self.clear_poem)
         if self.args.tags:
             self.master.bind_all(f"<{modkey}-R>", self.reveal_writers)
-            self.filemenu.entryconfig("Reveal Writers", state=tk.NORMAL)
+            self.filemenu.entryconfig(_("Reveal Writers"), state=tk.NORMAL)
 
     def save_poem(self, event=None):
         """ Open save dialog and display selected file in textbox. """
         poem_text = self.poem.get_poem()
         files = [("Text Document", "*.txt")]
         file_path = filedialog.asksaveasfilename(filetypes=files, defaultextension=files,
-                                                 title="Save Poem", initialfile="poem.txt")
+                                                 title=_("Save Poem"), initialfile="poem.txt")
         if self.args.verbose: print(f"saving to {file_path}")
         self.poem.save_to(file_path)
         self.master.focus_set()
@@ -246,13 +255,13 @@ class Application(tk.Frame):
         except openai.error.AuthenticationError as exc:
             print(f"open ai authentication failed: {exc}", file=sys.stderr)
             messagebox.showerror("Exquisite-corpse",
-                                 "OpenAI authentication failed!\nIs the secret key set and valid?")
+                                 _("OpenAI authentication failed!\nIs the secret key set and valid?"))
             self.master.quit()
             return False
         except Exception as exc:
             print(f"open ai error: {exc}", file=sys.stderr)
             messagebox.showerror("Exquisite-corpse",
-                                 f"An error has occured!\n{exc}")
+                                 _("An error has occured!") + f"\n{exc}")
             return False
         if self.args.breaks: self.poem.add_break()
         if self.args.tags: self.poem.add_lines("<ai>")
@@ -272,12 +281,12 @@ class Application(tk.Frame):
             self.fold_poem()
             self.clear_text() # hide last line
             self.ignore_first = False
-            self.fold_button.configure(text="Unfold")
+            self.fold_button.configure(text=_("Unfold"))
             self.textbox["state"] = tk.DISABLED
             self.textbox.config(bg=self.master.cget("bg"))#"#eee")
         else:
             self.unfold_poem()
-            self.fold_button.configure(text="Fold")
+            self.fold_button.configure(text=_("Fold"))
             self.textbox.config(bg="white")
 
     def fold_poem(self, event=None):
@@ -344,7 +353,7 @@ class Application(tk.Frame):
     def ask_to_save_poem(self):
         """ Open a dialog asking to save poem. If yes, then open save dialog. """
         if messagebox.askyesno("Exquisite-corpse",
-                               "Would you like to save your poem?"):
+                               _("Would you like to save your poem?")):
             self.save_poem()
         else:
             self.master.focus_set()

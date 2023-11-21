@@ -128,6 +128,25 @@ or manually:
     ./venv/bin/activate
     pip -r requirements.txt
 
+Locale Support
+--------------
+
+Optionally, install [GNU gettext](https://www.gnu.org/software/gettext) and build translation files for non-English locales.
+
+Install gettext for your platform:
+
+* macOS: via Homebrew: `brew install gettext`
+* Linux: using your package manager, ie. for Debian: `sudo apt-get install gettext`
+* Windows: not tested
+
+Generate translation files in the `locale` directory:
+
+    make -C locale
+
+See `locale/README.md` for more info.
+
+_Note: ChatGPT will respond in English if using the default `instructions.txt`. Try translating the instructions or simply adding an additional instruction to respond on in the desired language, ie. "You are to respond only in German."_
+
 Configuration
 -------------
 

@@ -1,0 +1,64 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the Exquisite-corpse package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Exquisite-corpse\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-11-21 22:21+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Exquisite Corpse!"
+msgstr ""
+
+msgid "Fold"
+msgstr "Falten"
+
+msgid "Reveal Poem"
+msgstr "Gedicht aufdecken"
+
+msgid "Un/Fold"
+msgstr "Ent/Falten"
+
+msgid "Reveal Writers"
+msgstr "Autoren aufdecken"
+
+msgid "Save..."
+msgstr "Speichern..."
+
+msgid "Clear..."
+msgstr "Leeren..."
+
+msgid "Exit"
+msgstr "Beenden"
+
+msgid "Clear Poem"
+msgstr "Gedicht löschen"
+
+msgid "Save Poem"
+msgstr "Gedicht speichern"
+
+msgid ""
+"OpenAI authentication failed!\n"
+"Is the secret key set and valid?"
+msgstr ""
+"OpenAI-Authentifizierung fehlgeschlagen!\n"
+"Ist der geheime Schlüssel gesetzt und gültig?"
+
+msgid "An error has occured!"
+msgstr "Ein Fehler ist aufgetreten!"
+
+msgid "Unfold"
+msgstr "Entfalten"
+
+msgid "Would you like to save your poem?"
+msgstr "Möchten Sie Ihr Gedicht speichern?"
