@@ -261,7 +261,8 @@ class Application(tk.Frame):
         except Exception as exc:
             print(f"open ai error: {exc}", file=sys.stderr)
             messagebox.showerror("Exquisite-corpse",
-                                 _("An error has occured!") + f"\n{exc}")
+                                 _("An error has occured!") +
+                                 f"\n\n{exc.error.message if exc.error else exec}")
             return False
         if self.args.breaks: self.poem.add_break()
         if self.args.tags: self.poem.add_lines("<ai>")
