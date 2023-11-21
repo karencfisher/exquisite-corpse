@@ -233,6 +233,8 @@ For custom instructions and ChatGPT configurations, either file can be given on 
 
     ./exquisite --config my_gpt_config.json my_instructions.txt
 
+For the current chat completion model names for use in the JSON config, see the [OpenAI docs](https://platform.openai.com/docs/models/model-endpoint-compatibility).
+
 ### Default Behavior
 
 The writer takes turns with ChatGPT on each fold. The text is kept plain without line breaks or writer tag annotation.
