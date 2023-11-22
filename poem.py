@@ -10,11 +10,12 @@ class Poem:
         self.dirty = False # has the poem changed since the last save?
         self.complete_text = [] # complete poem as an array of separate lines
 
-    def get_last_line(self, max_words=50):
+    def get_last_line(self, max_words=0):
         """
-        Returns the last line of the poem, up to max_words in length.
+        Returns the last line of the poem.
 
-        Set max_words=0 to return full line.
+        Set max_words > 0 to limit number of words returned. This is useful for
+        texts which may not contain line breaks, such as story prose.
         """
         if len(self.complete_text) == 0: return ""
         last_line = self.complete_text[-1]

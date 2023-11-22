@@ -54,6 +54,9 @@ def create_parser():
         help="force line breaks between folds")
     parser.add_argument("-t", "--tags", action="store_true", dest="tags",
         help="prepend writer tag lines per fold: <ai> or <human>, adds Reveal Writers menu item")
+    parser.add_argument(
+        "--maxwords", action="store", dest="max_words",
+        default=30, type=int, help="max allowed words for prev line, useful for story text which may not use line breaks, default: 0 (allow all)")
     parser.add_argument("-v", "--verbose", action="store_true", dest="verbose",
         help="enable verbose printing")
     return parser
@@ -306,13 +309,13 @@ class Application(tk.Frame):
         else:
             # ChatGPT
             if not self.add_ai_lines(): return
-        self.set_text(self.poem.get_last_line())
+        self.set_text(self.poem.get_last_line(max_words=self.args.max_words))
         self.ignore_first = True
 
     def unfold_poem(self, event=None):
         """ Unfold text to show last poem line. """
         self.textbox["state"] = tk.NORMAL
-        self.set_text(self.poem.get_last_line())
+        self.set_text(self.poem.get_last_line(max_words=self.args.max_words))
         self.ignore_first = True
 
     def reveal_poem(self, event=None):

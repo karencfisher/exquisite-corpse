@@ -226,6 +226,7 @@ options:
   -d, --dummyai         use dummy ai text instead of ChatGPT (saves money when testing)
   -b, --breaks          force line breaks between folds
   -t, --tags            prepend writer tag lines per fold: <ai> or <human>, adds Reveal Writers menu item
+  --maxwords MAX_WORDS  max allowed words for prev line, useful for story text which may not use line breaks, default: 0 (allow all)
   -v, --verbose         enable verbose printing
 ~~~
 
@@ -262,3 +263,7 @@ Prepend an empty line between folds. This should make it easier to delineate bet
 #### Tags
 
 Prepend writer tags `<human>` or `<ai>` to each fold to denote the original writer. When set, Reveal Text will show the poem text without tags. The show the tags use the additional Reveal Writers option afterwards. Writer tags are always saved with the text file, whether or not they are revealed in the textbox.
+
+#### Max Lines
+
+Poetry responses from ChatGPT seem to be generally formatted using line breaks between the lines. If story or prose text is desired via the instructions.txt prompt, the text returned by ChatGPT may not contain line breaks and the entire *section* would be shown as the "last line" after folding. To limit the length via number of words, use the `--maxwords` option to something like 20 or 30.
