@@ -10,9 +10,16 @@ class Poem:
         self.dirty = False # has the poem changed since the last save?
         self.complete_text = [] # complete poem as an array of separate lines
 
-    def get_last_line(self):
-        """ Returns the last line of the poem. """
-        return self.complete_text[-1] if len(self.complete_text) > 0 else "" 
+    def get_last_line(self, max_words=50):
+        """
+        Returns the last line of the poem, up to max_words in length.
+
+        Set max_words=0 to return full line.
+        """
+        if len(self.complete_text) == 0: return ""
+        last_line = self.complete_text[-1]
+        if max_words < 1: return ""
+        return " ".join(last_line.split(" ")[-max_words:])
     
     def get_prompt(self):
         """ Returns a prompt with the last line of the poem for ChatGPT. """
