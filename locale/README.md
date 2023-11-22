@@ -40,11 +40,11 @@ string ids and translation stubs with associated metadata:
     msgstr ""
 
 To create a new translation, add the appropriate ISO 639 2 or 3 letter language
-code (ie. Spanish is "es") to the `LOCALES` variable in the Makefile:
+code (ie. Spanish is "es_ES") to the `LOCALES` variable in the Makefile:
 
 ```Makefile
-# en is default, support these additional locales
-LOCALES = de es
+# en_US is default, support these additional locales
+LOCALES = de_DE es_ES
 ```
 
 Next, run make in this dir
@@ -55,11 +55,11 @@ Next, run make in this dir
 which will copy the base.pot template into a new base.po file in the following
 subdirectory:
 ~~~
-es/LC_MESSAGES/base.po
+es_ES/LC_MESSAGES/base.po
 ~~~
 
 _Note that some languages also have specific country distinctions, ie. Brazilian
-Portuguese and Portuguese are named "pt_br.po" & "pt_pt.po", respectively._
+Portuguese and Portuguese are named "pt_BR" & "pt_PT", respectively._
 
 Next, fill out the msgstr portion for each msgid with it's translation:
 
@@ -82,7 +82,13 @@ default English text is used.
 You can manually set the locale when running the program from the commandline
 with the LANG or LC_MESSAGES environment variables, in this case German (de):
 
-    LANG=de ./exquisite
+    LANG=de_DE ./exquisite
+
+To see the current locale info:
+
+    %locale
+    LANG="en_US.UTF-8"
+    ...
 
 Developer Info
 --------------
