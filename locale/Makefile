@@ -12,7 +12,7 @@ MSGFMT = msgfmt
 FILES = $(wildcard ../*.py)
 
 # en is default, support these additional locales
-LOCALES = de_DE
+LOCALES = de
 
 # translation source files, edit these
 POFILES = $(addsuffix /LC_MESSAGES/base.po, $(LOCALES))
