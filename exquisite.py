@@ -18,7 +18,8 @@ from dotenv import load_dotenv
 # load optional translations in locale dir
 try:
     import gettext
-    gettext.bindtextdomain("base", "locale")
+    scriptdir = os.path.dirname(os.path.realpath(sys.argv[0]))
+    gettext.bindtextdomain("base", f"{scriptdir}/locale")
     gettext.textdomain("base")
     _ = gettext.gettext
 except:
