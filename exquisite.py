@@ -123,7 +123,7 @@ class Application(tk.Frame):
         self.fold_button.grid(row=1, column=1, sticky="se", padx=(4, 10), pady=10)
 
         # reveal poem button
-        self.reveal_button = tk.Button(self.master, text=_("Reveal Poem"), command=self.reveal_poem)
+        self.reveal_button = tk.Button(self.master, text=_("Reveal Text"), command=self.reveal_poem)
         self.reveal_button.grid(row=1, column=0, sticky="sw", padx=(10, 4), pady=10)
 
         # menu
@@ -134,7 +134,7 @@ class Application(tk.Frame):
             filemenu.add_command(label=_("Un/Fold"), command=self.toggle_fold, accelerator=f"{modkey}-f")
         else:
             filemenu.add_command(label=_("Fold"), command=self.fold_poem, accelerator=f"{modkey}-f")
-        filemenu.add_command(label=_("Reveal Poem"), command=self.reveal_poem, accelerator=f"{modkey}-r")
+        filemenu.add_command(label=_("Reveal Text"), command=self.reveal_poem, accelerator=f"{modkey}-r")
         if self.args.tags:
             filemenu.add_command(label=_("Reveal Writers"), command=self.reveal_writers, accelerator=f"Shift-{modkey}-r")
         filemenu.add_separator()
@@ -164,9 +164,9 @@ class Application(tk.Frame):
         self.master.bind_all(f"<{modkey}-f>", self.toggle_fold if self.args.unfold else self.fold_poem)
         self.master.bind_all(f"<{modkey}-r>", self.reveal_poem)
         self.filemenu.entryconfig(_("Un/Fold") if self.args.unfold else _("Fold"), state=tk.NORMAL)
-        self.filemenu.entryconfig(_("Reveal Poem"), state=tk.NORMAL)
+        self.filemenu.entryconfig(_("Reveal Text"), state=tk.NORMAL)
         self.fold_button["state"] = tk.NORMAL
-        self.reveal_button.configure(text=_("Reveal Poem"), command=self.reveal_poem)
+        self.reveal_button.configure(text=_("Reveal Text"), command=self.reveal_poem)
         if self.args.unfold:
             self.fold_button.configure(text=_("Fold"))
         if self.args.tags:
@@ -179,9 +179,9 @@ class Application(tk.Frame):
         self.master.unbind(f"<{modkey}-f>")
         self.master.unbind(f"<{modkey}-r>")
         self.filemenu.entryconfig(_("Un/Fold") if self.args.unfold else _("Fold"), state=tk.DISABLED)
-        self.filemenu.entryconfig(_("Reveal Poem"), state=tk.DISABLED)
+        self.filemenu.entryconfig(_("Reveal Text"), state=tk.DISABLED)
         self.fold_button["state"] = tk.DISABLED
-        self.reveal_button.configure(text=_("Clear Poem"), command=self.clear_poem)
+        self.reveal_button.configure(text=_("Clear Text"), command=self.clear_poem)
         if self.args.tags:
             self.master.bind_all(f"<{modkey}-R>", self.reveal_writers)
             self.filemenu.entryconfig(_("Reveal Writers"), state=tk.NORMAL)
@@ -191,7 +191,7 @@ class Application(tk.Frame):
         poem_text = self.poem.get_poem()
         files = [("Text Document", "*.txt")]
         file_path = filedialog.asksaveasfilename(filetypes=files, defaultextension=files,
-                                                 title=_("Save Poem"), initialfile="poem.txt")
+                                                 title=_("Save Text"), initialfile="poem.txt")
         if self.args.verbose: print(f"saving to {file_path}")
         self.poem.save_to(file_path)
         self.master.focus_set()
@@ -355,7 +355,7 @@ class Application(tk.Frame):
     def ask_to_save_poem(self):
         """ Open a dialog asking to save poem. If yes, then open save dialog. """
         if messagebox.askyesno("Exquisite-corpse",
-                               _("Would you like to save your poem?")):
+                               _("Would you like to save your text?")):
             self.save_poem()
         else:
             self.master.focus_set()

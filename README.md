@@ -261,4 +261,4 @@ Prepend an empty line between folds. This should make it easier to delineate bet
 
 #### Tags
 
-Prepend writer tags `<human>` or `<ai>` to each fold to denote the original writer. When set, Reveal Poem will show the poem text without tags. The show the tags use the additional Reveal Writers option afterwards. Writer tags are always saved with the text file, whether or not they are revealed in the textbox.
+Prepend writer tags `<human>` or `<ai>` to each fold to denote the original writer. When set, Reveal Text will show the poem text without tags. The show the tags use the additional Reveal Writers option afterwards. Writer tags are always saved with the text file, whether or not they are revealed in the textbox.
