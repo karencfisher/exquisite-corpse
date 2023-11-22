@@ -110,7 +110,7 @@ cd exquisite-corpse
 
 **macOS**: it is recommended to install Python and Tkinter using [homebrew](https://brew.sh)
 
-    brew install python3 tkinter python-tk
+    brew install python3 python-tk
 
 **Linux**: a version of Python3 should already be installed, install Tkinter using your package manager, for Debian it woudl be something like:
 
@@ -133,11 +133,15 @@ Locale Support
 
 Optionally, install [GNU gettext](https://www.gnu.org/software/gettext) and build translation files for non-English locales.
 
-Install gettext for your platform:
+**Windows**: not tested, can be installed if usinfg msys2 or as a separate installer(?)
 
-* macOS: via Homebrew: `brew install gettext`
-* Linux: using your package manager, ie. for Debian: `sudo apt-get install gettext`
-* Windows: not tested
+**macOS**: install via Homebrew:
+
+    brew install gettext`
+
+**Linux**: install using your package manager, ie. for Debian:
+
+    sudo apt-get install gettext
 
 Generate translation files in the `locale` directory:
 
