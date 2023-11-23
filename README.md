@@ -112,7 +112,7 @@ cd exquisite-corpse
 
     brew install python3 python-tk
 
-**Linux**: a version of Python3 should already be installed, install Tkinter using your package manager, for Debian it woudl be something like:
+**Linux**: a version of Python3 should already be installed, install Tkinter using your package manager, for Debian it would be something like:
 
     sudo apt-get install python-tk
 
@@ -133,7 +133,7 @@ Locale Support
 
 Optionally, install [GNU gettext](https://www.gnu.org/software/gettext) and build translation files for non-English locales.
 
-**Windows**: not tested, can be installed if usinfg msys2 or as a separate installer(?)
+**Windows**: not tested, can be installed if using msys2 or as a separate installer(?)
 
 **macOS**: install via Homebrew:
 
