@@ -103,8 +103,8 @@ cd exquisite-corpse
 
 2) Install system dependencies
 
-* Python3
-* Tkinter
+* Python3: scripting language
+* Tkinter: cross-platform GUI toolkit
 
 **Windows**: download Python and install from [python.org](https://www.python.org/downloads/windows/), Tkinter is included
 
@@ -149,7 +149,7 @@ Generate translation files in the `locale` directory:
 
 See `locale/README.md` for more info.
 
-_Note: ChatGPT will respond in English if using the default `instructions.txt`. Try translating the instructions or simply adding an additional instruction to respond on in the desired language, ie. "You are to respond only in German."_
+_Note: ChatGPT will respond in English if using the default `instructions.txt`. Try translating the instructions or simply adding an additional instruction to respond in the desired language, ie. "You are to respond only in German."_
 
 Configuration
 -------------
@@ -253,6 +253,8 @@ Additional behavior has been added to allow for flexibility when used with multi
 #### Unfold
 
 The textbox is hidden ("blanked") after folding so the writer will not know if ChatGPT has responded. The next writer then unfolds to unhide the textbox. The fold button and menu item act as a toggle between "Fold" and "Unfold".
+
+Additionally, see the `--sleep` option to help hide when ChatGPT responds.
 
 #### Random
 
