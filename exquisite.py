@@ -2,10 +2,12 @@
 # copyright (c) 2023 karencfisher, et al.
 # updated by Dan Wilcox <dan.wilcox@zkm.de> ZKM | Hertz-Lab 2023
 
-import json, random
+import json
+import random
 import os
 import sys
 import argparse
+import time
 
 import tkinter as tk
 from tkinter import filedialog
@@ -57,6 +59,9 @@ def create_parser():
     parser.add_argument(
         "--maxwords", action="store", dest="max_words",
         default=30, type=int, help="max allowed words for prev line, useful for story text which may not use line breaks, default: 0 (allow all)")
+    parser.add_argument(
+        "-s", "--sleep", action="store", dest="sleep",
+        default=0, type=int, help="delay to sleep after a human folds in seconds when --unfold is enabled, default: 0 (none)")
     parser.add_argument("-v", "--verbose", action="store_true", dest="verbose",
         help="enable verbose printing")
     return parser
@@ -298,13 +303,14 @@ class Application(tk.Frame):
         """
         Fold current text into the poem. Leave last line visible.
 
-        If opt_random = True, randomly chooses between human or ChatGPT for the
+        If args.random = True, randomly chooses between human or ChatGPT for the
         next lines, otherwise always generate a ChatGPT response.
         """
         if self.args.random:
             if(random.randint(0, 100) < self.args.random_ai):
                 if not self.add_ai_lines(): return
             else:
+                if self.args.sleep > 0: time.sleep(self.args.sleep)
                 if not self.add_human_lines(): return
         else:
             # ChatGPT

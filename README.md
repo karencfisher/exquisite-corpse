@@ -227,6 +227,8 @@ options:
   -b, --breaks          force line breaks between folds
   -t, --tags            prepend writer tag lines per fold: <ai> or <human>, adds Reveal Writers menu item
   --maxwords MAX_WORDS  max allowed words for prev line, useful for story text which may not use line breaks, default: 0 (allow all)
+  -s SLEEP, --sleep SLEEP
+                        delay to sleep after a human folds in seconds when --unfold is enabled, default: 0 (none)
   -v, --verbose         enable verbose printing
 ~~~
 
@@ -267,3 +269,7 @@ Prepend writer tags `<human>` or `<ai>` to each fold to denote the original writ
 #### Max Lines
 
 Poetry responses from ChatGPT seem to be generally formatted using line breaks between the lines. If story or prose text is desired via the instructions.txt prompt, the text returned by ChatGPT may not contain line breaks and the entire *section* would be shown as the "last line" after folding. To limit the length via number of words, use the `--maxwords` option to something like 20 or 30.
+
+#### Sleep
+
+There may be a delay for communication with the OpenAI API, so the program may freeze for a couple seconds when ChatGPT is responding. With unfold enabled if ChatGPT is randomly responding, this delay can show *when* ChatGPT enters into a round of writing. Use the `--sleep S` option to add a small delay after each person when folding to simulate this delay to make it harder to tell when ChatGPT responds. A good amount may be 3 or 4 seconds, ie. `--sleep 3`.
