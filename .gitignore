@@ -1,7 +1,19 @@
-/.vscode
+# python
 /exqc-env
-.env
+/venv
 /build
 /dist
 /__pycache__
 exquisite.spec
+
+# translations
+*.mo
+
+# secret
+.env
+
+# vscode
+/.vscode
+
+# macOS
+.DS_Store
